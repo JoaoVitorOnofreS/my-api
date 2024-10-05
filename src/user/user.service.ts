@@ -1,13 +1,15 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UseGuards } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
 import { Prisma, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Injectable()
 export class UserService {
   @Inject()
   private readonly prisma: PrismaService;
 
+  @UseGuards(AuthGuard)
   async findAll() {
     return this.prisma.user.findMany();
   }
