@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -14,6 +14,12 @@ export class UserService {
 
   async findOne(id: string) {
     return this.prisma.user.findUnique({ where: { id } });
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return this.prisma.user.findUnique({
+      where: { email },
+    });
   }
 
   async create(data: Prisma.UserCreateInput) {
